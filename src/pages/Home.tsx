@@ -1,14 +1,16 @@
-import React from 'react';
+import React , {useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import OffersBanner from '../components/OffersBanner';
 import CanteenCard from '../components/CanteenCard';
 import { mockCanteens } from '../data/mockData';
 import { History, Sparkles } from 'lucide-react';
+import { ContextAPI } from '../GlobalProvider/ContextAPI';
 
 const Home: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const {scrwidth} = useContext(ContextAPI)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -18,7 +20,7 @@ const Home: React.FC = () => {
           <div className="max-w-3xl">
             <div className="flex items-center gap-2 mb-4">
               <Sparkles size={24} className="md:w-7 md:h-7" />
-              <h1 className="text-white text-xl md:text-3xl">Welcome, {user?.name}!</h1>
+              <h1 className="text-white text-xl md:text-3xl">Welcome, {user?.name}! </h1>
             </div>
             <p className="text-base md:text-xl text-white/90">
               Order your favorite meals from campus canteens and get them delivered to your department

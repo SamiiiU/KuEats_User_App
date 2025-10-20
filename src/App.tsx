@@ -14,26 +14,27 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderProcessing from './pages/OrderProcessing';
 import OrderHistory from './pages/OrderHistory';
+import GlobalProvider from './GlobalProvider/GlobalProvider';
 
 // Protected Route wrapper
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
-  
+
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-  
+
   return <>{children}</>;
 };
 
 // Public Route wrapper (redirect to home if already logged in)
 const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
-  
+
   if (isAuthenticated) {
     return <Navigate to="/home" replace />;
   }
-  
+
   return <>{children}</>;
 };
 
@@ -116,25 +117,27 @@ const AppRoutes: React.FC = () => {
 export default function App() {
   return (
     <Router>
-      <AuthProvider>
-        <CartProvider>
-          <OrderProvider>
-            <AppRoutes />
-            <Toaster 
-              position="top-right" 
-              richColors 
-              closeButton
-              toastOptions={{
-                style: {
-                  background: '#ffffff',
-                  color: '#1f2937',
-                  border: '1px solid #e5e7eb',
-                },
-              }}
-            />
-          </OrderProvider>
-        </CartProvider>
-      </AuthProvider>
+      <GlobalProvider>
+        <AuthProvider>
+          <CartProvider>
+            <OrderProvider>
+              <AppRoutes />
+              <Toaster
+                position="top-right"
+                richColors
+                closeButton
+                toastOptions={{
+                  style: {
+                    background: '#ffffff',
+                    color: '#1f2937',
+                    border: '1px solid #e5e7eb',
+                  },
+                }}
+              />
+            </OrderProvider>
+          </CartProvider>
+        </AuthProvider>
+      </GlobalProvider>
     </Router>
   );
 }
