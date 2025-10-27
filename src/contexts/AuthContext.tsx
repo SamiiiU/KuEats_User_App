@@ -11,7 +11,6 @@ interface AuthContextType {
     name: string;
     email: string;
     department: string;
-    role: string;
     password: string;
   }) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
@@ -22,6 +21,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated , setIsAuthenticated] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -39,11 +39,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    setIsAuthenticated(true)
+    console.log(data);
     return { error };
   };
 
-  const signUp = async ({ name, email, department, role, password }: any) => {
+  const signUp = async ({ name, email, department,  password }: any) => {
     // 1. Create auth account
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -60,7 +62,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           name,
           email,
           department,
-          role,
         },
       ]);
 
@@ -70,12 +71,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error: null };
   };
 
-  const signOut = async () => {
+  const logout = async () => {
     await supabase.auth.signOut();
+    setIsAuthenticated(false)
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signIn, signUp, logout, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );

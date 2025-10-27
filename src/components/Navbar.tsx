@@ -13,6 +13,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = () => {
     logout();
+    
     navigate('/login');
     setMenuOpen(false);
   };

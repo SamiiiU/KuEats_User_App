@@ -7,6 +7,8 @@ import { mockCanteens } from '../data/mockData';
 import InputField from '../components/InputField';
 import { ArrowLeft, MapPin, CreditCard, User } from 'lucide-react';
 import { toast } from 'sonner@2.0.3';
+import { supabase } from '../lib/supabase';// Make sure this path is correct
+import { v4 as uuidv4 } from 'uuid'; // Install uuid if not already: npm install uuid
 
 const Checkout: React.FC = () => {
   const navigate = useNavigate();
@@ -22,7 +24,7 @@ const Checkout: React.FC = () => {
     return null;
   }
 
-  const handleConfirmOrder = (e: React.FormEvent) => {
+  const handleConfirmOrder = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!deliveryDepartment.trim()) {
@@ -30,31 +32,26 @@ const Checkout: React.FC = () => {
       return;
     }
 
-    const order = {
-      id: Date.now().toString(),
-      userId: user!.id,
-      canteenId: currentCanteenId!,
-      canteenName: canteen!.name,
-      items: cartItems,
-      totalPrice: getTotalPrice(),
-      deliveryDepartment,
-      paymentMethod: 'Cash on Delivery',
-      status: 'Processing' as const,
-      date: new Date().toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-      }),
+    // Prepare order data for Supabase
+    const orderData = {
+      id: uuidv4(),
+      canteen_id: 'd9e5dbc1-526c-47d2-b3d3-9707f7f859f9',
+      customer_name: user?.name || '',
+      items: cartItems, // Should be JSON serializable
+      total_amount: getTotalPrice(),
+      status: 'pending',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     };
 
-    addOrder(order);
+    // Insert into Supabase
+    await addOrder(orderData);
+
     clearCart();
     toast.success('Order placed successfully!');
-    navigate(`/order-processing/${order.id}`);
+    navigate(`/order-processing/${orderData.id}`);
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -157,7 +154,7 @@ const Checkout: React.FC = () => {
                     <span>
                       {item.menuItem.name} x {item.quantity}
                     </span>
-                    <span>₹{item.menuItem.price * item.quantity}</span>
+                    <span>Rs{item.menuItem.price * item.quantity}</span>
                   </div>
                 ))}
               </div>
@@ -165,7 +162,7 @@ const Checkout: React.FC = () => {
               <div className="space-y-3 border-t pt-3">
                 <div className="flex justify-between text-gray-600">
                   <span>Subtotal</span>
-                  <span>₹{getTotalPrice()}</span>
+                  <span>Rs{getTotalPrice()}</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Delivery Fee</span>
@@ -173,7 +170,7 @@ const Checkout: React.FC = () => {
                 </div>
                 <div className="border-t pt-3 flex justify-between">
                   <span className="text-gray-900">Total</span>
-                  <span className="text-gray-900">₹{getTotalPrice()}</span>
+                  <span className="text-gray-900">Rs{getTotalPrice()}</span>
                 </div>
               </div>
             </div>

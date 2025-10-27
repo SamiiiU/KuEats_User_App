@@ -13,10 +13,10 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onViewDetails, onReorder }
     <div className="bg-white rounded-xl shadow-md p-4 md:p-6 hover:shadow-lg transition-shadow">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
         <div className="flex-1">
-          <h3 className="text-gray-900 mb-1 text-base md:text-lg">{order.canteenName}</h3>
+          <h3 className="text-gray-900 mb-1 text-base md:text-lg">Mass Com Canteen</h3>
           <div className="flex items-center gap-2 text-gray-600 text-xs md:text-sm">
             <Calendar size={14} className="md:w-4 md:h-4" />
-            <span>{order.date}</span>
+            <span>{order.created_at.toLocaleString()}</span>
           </div>
         </div>
         <span
@@ -35,7 +35,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onViewDetails, onReorder }
       <div className="space-y-2 mb-4">
         <div className="flex items-center gap-2 text-gray-600 text-xs md:text-sm">
           <MapPin size={14} className="md:w-4 md:h-4" />
-          <span>{order.deliveryDepartment}</span>
+          <span>Computer Science</span>
         </div>
         <div className="flex items-center gap-2 text-gray-600 text-xs md:text-sm">
           <CreditCard size={14} className="md:w-4 md:h-4" />
@@ -45,7 +45,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onViewDetails, onReorder }
 
       <div className="border-t pt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
         <span className="text-gray-900 text-base md:text-lg">
-          Total: ₹{order.totalPrice}
+          Total: Rs{order.totalPrice}
         </span>
         <div className="flex flex-col sm:flex-row gap-2">
           <button

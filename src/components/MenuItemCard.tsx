@@ -9,10 +9,10 @@ interface MenuItemCardProps {
 
 const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onAddToCart }) => {
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+    <div className="my-10 bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
       <div className="relative h-48">
         <img
-          src={item.image}
+          src={item.image_url}
           alt={item.name}
           className="w-full h-full object-cover"
         />
@@ -25,7 +25,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onAddToCart }) => {
           </div>
         </div>
         <div className="flex justify-between items-center mt-3">
-          <span className="text-[#831615]">₹{item.price}</span>
+          <span className="text-[#831615]">Rs {item.price}</span>
           <button
             onClick={onAddToCart}
             className="bg-[#831615] text-white px-4 py-2 rounded-lg hover:bg-[#6b1211] transition-colors flex items-center gap-2"

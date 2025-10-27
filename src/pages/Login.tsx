@@ -26,7 +26,7 @@ const Login: React.FC = () => {
       console.error('Login Error:', error);
       return;
     }
-
+    
     toast.success('Login successful!');
     navigate('/home');
   };
@@ -82,8 +82,8 @@ const Login: React.FC = () => {
 
         <div className="mt-6 p-4 bg-gray-50 rounded-lg">
           <p className="text-sm text-gray-600 mb-2">Demo credentials:</p>
-          <p className="text-xs text-gray-500">Email: john@example.com</p>
-          <p className="text-xs text-gray-500">Password: password123</p>
+          <p className="text-xs text-gray-500">Email: studentsami@gmail.com</p>
+          <p className="text-xs text-gray-500">Password: 12345</p>
         </div>
       </div>
     </div>

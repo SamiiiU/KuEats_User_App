@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import { mockCanteens, mockMenuItems, MenuItem } from '../data/mockData';
 import MenuItemCard from '../components/MenuItemCard';
 import { ArrowLeft, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner@2.0.3';
+import { supabase } from '../lib/supabase';
 
 const CanteenMenu: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +17,26 @@ const CanteenMenu: React.FC = () => {
   const canteen = mockCanteens.find((c) => c.id === id);
   const menuItems = mockMenuItems.filter((item) => item.canteenId === id);
 
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    async function fetchMenuItems() {
+      const { data, error } = await supabase
+        .from('menu_items')
+        .select('*');
+      if (error) {
+        console.error('Error fetching menu items:', error);
+      } else {
+        setItems(data);
+        console.log(data)
+      }
+    }
+    fetchMenuItems();
+  }, []);
+
+  useEffect(() => {
+    console.log("menu agaya", items)
+  }, [items])
   if (!canteen) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -96,22 +117,13 @@ const CanteenMenu: React.FC = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6 md:py-8">
-        {categories.map((category) => (
-          <section key={category} className="mb-8 md:mb-12">
-            <h2 className="text-gray-900 mb-4 md:mb-6 text-lg md:text-2xl">{category}</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-              {menuItems
-                .filter((item) => item.category === category)
-                .map((item) => (
-                  <MenuItemCard
-                    key={item.id}
-                    item={item}
-                    onAddToCart={() => handleAddToCart(item)}
-                  />
-                ))}
-            </div>
-          </section>
+      <div className="grid lg:grid-cols-4 grid-cols-2 mx-auto sm:px-12 py-6 gap-6 md:py-8 ">
+        {items.map((item) => (
+          <MenuItemCard
+            key={item.id}
+            item={item}
+            onAddToCart={() => handleAddToCart(item)}
+          />
         ))}
       </div>
 

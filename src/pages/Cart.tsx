@@ -32,6 +32,7 @@ const Cart: React.FC = () => {
   }
 
   const handleCheckout = () => {
+    console.log("proceed to checkout" , cartItems)
     navigate('/checkout');
   };
 
@@ -91,14 +92,14 @@ const Cart: React.FC = () => {
                     className="flex gap-4 p-4 bg-gray-50 rounded-lg"
                   >
                     <img
-                      src={item.menuItem.image}
+                      src={item.menuItem.image_url}
                       alt={item.menuItem.name}
                       className="w-24 h-24 rounded-lg object-cover"
                     />
                     <div className="flex-1">
                       <h4 className="text-gray-900 mb-1">{item.menuItem.name}</h4>
                       <p className="text-sm text-gray-600 mb-2">{item.menuItem.category}</p>
-                      <p className="text-[#831615]">₹{item.menuItem.price}</p>
+                      <p className="text-[#831615]">Rs{item.menuItem.price}</p>
                     </div>
                     <div className="flex flex-col items-end justify-between">
                       <button
@@ -137,7 +138,7 @@ const Cart: React.FC = () => {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-gray-600">
                   <span>Subtotal</span>
-                  <span>₹{getTotalPrice()}</span>
+                  <span>Rs{getTotalPrice()}</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Delivery Fee</span>
@@ -145,11 +146,11 @@ const Cart: React.FC = () => {
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Taxes</span>
-                  <span>₹0</span>
+                  <span>Rs0</span>
                 </div>
                 <div className="border-t pt-3 flex justify-between">
                   <span className="text-gray-900">Total</span>
-                  <span className="text-gray-900">₹{getTotalPrice()}</span>
+                  <span className="text-gray-900">Rs{getTotalPrice()}</span>
                 </div>
               </div>
 

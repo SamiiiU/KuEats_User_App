@@ -1,9 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Order, mockOrders } from '../data/mockData';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { Order } from '../data/mockData';
+import { supabase } from '../lib/supabase'; // Adjust path as needed
 
 interface OrderContextType {
   orders: Order[];
-  addOrder: (order: Order) => void;
+  addOrder: (order: Order) => Promise<void>;
   getOrderById: (orderId: string) => Order | undefined;
   getUserOrders: (userId: string) => Order[];
 }
@@ -11,18 +12,38 @@ interface OrderContextType {
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
 export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [orders, setOrders] = useState<Order[]>(mockOrders);
+  const [orders, setOrders] = useState<Order[]>([]);
 
-  const addOrder = (order: Order) => {
-    setOrders([order, ...orders]);
+  // Fetch orders from Supabase on mount
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const { data, error } = await supabase
+        .from('orders')
+        .select('*');
+      if (!error && data) {
+        setOrders(data as Order[]);
+      }
+    };
+    fetchOrders();
+  }, []);
+
+  // Add order to Supabase
+  const addOrder = async (order: any) => {
+    const { data, error } = await supabase
+      .from('orders')
+      .insert([order])
+      .select();
+    if (!error && data) {
+      setOrders([data[0] as Order, ...orders]);
+    }
   };
 
   const getOrderById = (orderId: string) => {
     return orders.find((order) => order.id === orderId);
   };
 
-  const getUserOrders = (userId: string) => {
-    return orders.filter((order) => order.userId === userId);
+  const getUserOrders = () => {
+    return orders
   };
 
   return (

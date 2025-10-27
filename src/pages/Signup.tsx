@@ -56,21 +56,7 @@ const Signup: React.FC = () => {
             required
           />
 
-          <div className="flex flex-col gap-2">
-            <label className="text-gray-700">
-              Role <span className="text-[#831615]">*</span>
-            </label>
-            <select
-              value={role}
-              onChange={(e) => setRole(e.target.value as any)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#831615]"
-              required
-            >
-              <option value="Student">Student</option>
-              <option value="Faculty Member">Faculty Member</option>
-              <option value="Teacher">Teacher</option>
-            </select>
-          </div>
+         
 
           <InputField
             label="Password"
