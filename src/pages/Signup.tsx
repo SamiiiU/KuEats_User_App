@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import InputField from '../components/InputField';
-import { UtensilsCrossed } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
-import logo from '../assets/logo.png'
-
+import { toast } from 'sonner';
+import logo from '../assets/logo.png';
 
 const Signup: React.FC = () => {
   const [name, setName] = useState('');
@@ -14,10 +12,10 @@ const Signup: React.FC = () => {
   const [role, setRole] = useState<'Student' | 'Faculty Member' | 'Teacher'>('Student');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const { signup } = useAuth();
+  const { signUp } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -25,7 +23,13 @@ const Signup: React.FC = () => {
       return;
     }
 
-    signup({ name, email, department, role, password });
+    const { error } = await signUp({ name, email, department, role, password });
+
+    if (error) {
+      toast.error(error.message || 'Something went wrong');
+      return;
+    }
+
     toast.success('Account created successfully!');
     navigate('/home');
   };
@@ -36,35 +40,19 @@ const Signup: React.FC = () => {
         <div className="flex flex-col items-center mb-8">
           <div className="bg-[#831615] p-4 rounded-full mb-4">
             <img src={logo} style={{ width: 100 }} className="text-white w-20 h-20" />
-
           </div>
           <h1 className="text-gray-900 mb-2">Create Account</h1>
           <p className="text-gray-600">Join Campus Canteen</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <InputField
-            label="Full Name"
-            type="text"
-            value={name}
-            onChange={setName}
-            placeholder="Enter your name"
-            required
-          />
-          <InputField
-            label="Email"
-            type="email"
-            value={email}
-            onChange={setEmail}
-            placeholder="Enter your email"
-            required
-          />
+          <InputField label="Full Name" type="text" value={name} onChange={setName} required />
+          <InputField label="Email" type="email" value={email} onChange={setEmail} required />
           <InputField
             label="Department"
             type="text"
             value={department}
             onChange={setDepartment}
-            placeholder="e.g., Computer Science"
             required
           />
 
@@ -75,7 +63,7 @@ const Signup: React.FC = () => {
             <select
               value={role}
               onChange={(e) => setRole(e.target.value as any)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#831615] focus:border-transparent transition-all"
+              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#831615]"
               required
             >
               <option value="Student">Student</option>
@@ -89,7 +77,6 @@ const Signup: React.FC = () => {
             type="password"
             value={password}
             onChange={setPassword}
-            placeholder="Create a password"
             required
           />
           <InputField
@@ -97,7 +84,6 @@ const Signup: React.FC = () => {
             type="password"
             value={confirmPassword}
             onChange={setConfirmPassword}
-            placeholder="Confirm your password"
             required
           />
 
@@ -112,10 +98,7 @@ const Signup: React.FC = () => {
         <div className="mt-6 text-center">
           <p className="text-gray-600">
             Already have an account?{' '}
-            <button
-              onClick={() => navigate('/login')}
-              className="text-[#831615] hover:underline"
-            >
+            <button onClick={() => navigate('/login')} className="text-[#831615] hover:underline">
               Login
             </button>
           </p>

@@ -2,24 +2,33 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import InputField from '../components/InputField';
-import { toast } from 'sonner@2.0.3';
-import logo from '../assets/logo.png'
+import { toast } from 'sonner';
+import logo from '../assets/logo.png';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useAuth();
+  const { signIn } = useAuth(); // use the Supabase signIn from AuthContext
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = login(email, password);
-    if (success) {
-      toast.success('Login successful!');
-      navigate('/home');
-    } else {
-      toast.error('Invalid email or password');
+
+    if (!email || !password) {
+      toast.error('Please fill in all fields');
+      return;
     }
+
+    const { error } = await signIn(email, password);
+
+    if (error) {
+      toast.error('Invalid email or password');
+      console.error('Login Error:', error);
+      return;
+    }
+
+    toast.success('Login successful!');
+    navigate('/home');
   };
 
   return (
@@ -27,7 +36,7 @@ const Login: React.FC = () => {
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
         <div className="flex flex-col items-center mb-8">
           <div className="bg-[#831615] p-4 rounded-full mb-4">
-            <img src={logo} style={{ width : 100}} className="text-white w-20 h-20" />
+            <img src={logo} alt="KuEats Logo" style={{ width: 100 }} className="w-20 h-20" />
           </div>
           <h1 className="text-gray-900 mb-2">KuEats App</h1>
           <p className="text-gray-600">Login to your account</p>
@@ -61,7 +70,7 @@ const Login: React.FC = () => {
 
         <div className="mt-6 text-center">
           <p className="text-gray-600">
-            Don't have an account?{' '}
+            Don’t have an account?{' '}
             <button
               onClick={() => navigate('/signup')}
               className="text-[#831615] hover:underline"
