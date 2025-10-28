@@ -118,13 +118,15 @@ const CanteenMenu: React.FC = () => {
       </div>
 
       <div className="grid lg:grid-cols-4 grid-cols-2 mx-auto sm:px-12 py-6 gap-6 md:py-8 ">
-        {items.map((item) => (
-          <MenuItemCard
-            key={item.id}
-            item={item}
-            onAddToCart={() => handleAddToCart(item)}
-          />
-        ))}
+        {items
+          .filter((item) => item.is_available) // Only show available items
+          .map((item) => (
+            <MenuItemCard
+              key={item.id}
+              item={item}
+              onAddToCart={() => handleAddToCart(item)}
+            />
+          ))}
       </div>
 
       {/* Confirmation Modal */}

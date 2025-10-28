@@ -70,28 +70,28 @@ export const mockUsers: User[] = [
 export const mockCanteens: Canteen[] = [
   {
     id: '1',
-    name: 'Main Campus Canteen',
+    name: 'Chemistry Canteen',
     isOpen: true,
     deliveryTime: '15 mins',
     image: 'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400',
   },
   {
     id: '2',
-    name: 'Engineering Block Café',
+    name: 'Staff Club Canteen',
     isOpen: true,
     deliveryTime: '12 mins',
     image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400',
   },
   {
     id: '3',
-    name: 'Library Coffee Shop',
+    name: 'Sufi Canteen',
     isOpen: false,
     deliveryTime: '20 mins',
     image: 'https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=400',
   },
   {
     id: '4',
-    name: 'Sports Complex Canteen',
+    name: 'Mass Com Canteen',
     isOpen: true,
     deliveryTime: '18 mins',
     image: 'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=400',

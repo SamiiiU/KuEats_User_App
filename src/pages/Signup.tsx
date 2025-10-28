@@ -12,6 +12,7 @@ const Signup: React.FC = () => {
   const [role, setRole] = useState<'Student' | 'Faculty Member' | 'Teacher'>('Student');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
   const navigate = useNavigate();
 
@@ -23,7 +24,9 @@ const Signup: React.FC = () => {
       return;
     }
 
+    setLoading(true);
     const { error } = await signUp({ name, email, department, role, password });
+    setLoading(false);
 
     if (error) {
       toast.error(error.message || 'Something went wrong');
@@ -48,15 +51,25 @@ const Signup: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <InputField label="Full Name" type="text" value={name} onChange={setName} required />
           <InputField label="Email" type="email" value={email} onChange={setEmail} required />
-          <InputField
-            label="Department"
-            type="text"
+          
+          <label className="block text-gray-700 mb-1">Department</label>
+          <select
             value={department}
-            onChange={setDepartment}
+            onChange={e => setDepartment(e.target.value)}
             required
-          />
-
-         
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#831615] focus:border-transparent mb-2 text-sm"
+          >
+            <option value="">Select Department</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Biology">Biology</option>
+            <option value="Economics">Economics</option>
+            <option value="Business Administration">Business Administration</option>
+            <option value="English">English</option>
+            <option value="Other">Other</option>
+          </select>
 
           <InputField
             label="Password"
@@ -75,9 +88,28 @@ const Signup: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full bg-[#831615] text-white py-3 rounded-lg hover:bg-[#6b1211] transition-colors mt-6"
+            className="w-full bg-[#831615] text-white py-3 rounded-lg hover:bg-[#6b1211] transition-colors mt-6 flex items-center justify-center"
+            disabled={loading}
           >
-            Sign Up
+            {loading ? (
+              <svg className="animate-spin h-5 w-5 text-white mr-2" viewBox="0 0 24 24">
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  fill="none"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                />
+              </svg>
+            ) : null}
+            {loading ? 'Signing Up...' : 'Sign Up'}
           </button>
         </form>
 

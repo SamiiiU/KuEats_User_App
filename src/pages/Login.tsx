@@ -26,7 +26,12 @@ const Login: React.FC = () => {
       console.error('Login Error:', error);
       return;
     }
-    
+
+    if (error?.message?.toLowerCase().includes('email not confirmed')) {
+      toast.error('Please confirm your email address before logging in. Check your inbox for the confirmation link.');
+      return;
+    }
+
     toast.success('Login successful!');
     navigate('/home');
   };

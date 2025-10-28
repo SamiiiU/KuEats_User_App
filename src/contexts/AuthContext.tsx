@@ -19,33 +19,53 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<any | null>("Sami");
+  const [user, setUser] = useState("Sami");
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated , setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+  // useEffect(() => {
+  //   supabase.auth.getSession().then(({ data: { session } }) => {
+  //     setUser(session?.user ?? null);
+  //     setLoading(false);
+  //   });
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
+  //   const {
+  //     data: { subscription },
+  //   } = supabase.auth.onAuthStateChange((_event, session) => {
+  //     setUser(session?.user ?? null);
+  //   });
 
-    return () => subscription.unsubscribe();
-  }, []);
+  //   return () => subscription.unsubscribe();
+  // }, []);
 
   const signIn = async (email: string, password: string) => {
+    // 1. Authenticate with Supabase Auth
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    setIsAuthenticated(true)
-    console.log(data);
-    return { error };
+    if (error || !data?.user) {
+      return { error: error || { message: 'Authentication failed' } };
+    }
+    // 2. Fetch user from users table
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', data.user.id)
+      .single();
+
+    if (userError || !userData) {
+      return { error: { message: 'User not found in users table' } };
+    }
+
+    setIsAuthenticated(true);
+    setUser(userData); // Optionally set user to userData if you want app-wide info
+
+    return { error: null };
   };
 
-  const signUp = async ({ name, email, department,  password }: any) => {
+  useEffect(() => {
+    console.log("user data updated" , user)
+  } , [user])
+
+  const signUp = async ({ name, email, department, password }: any) => {
     // 1. Create auth account
     const { data, error } = await supabase.auth.signUp({
       email,

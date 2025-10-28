@@ -7,7 +7,6 @@ import { mockCanteens } from '../data/mockData';
 import InputField from '../components/InputField';
 import { ArrowLeft, MapPin, CreditCard, User } from 'lucide-react';
 import { toast } from 'sonner@2.0.3';
-import { supabase } from '../lib/supabase';// Make sure this path is correct
 import { v4 as uuidv4 } from 'uuid'; // Install uuid if not already: npm install uuid
 
 const Checkout: React.FC = () => {
@@ -40,7 +39,7 @@ const Checkout: React.FC = () => {
     const orderData = {
       id: uuidv4(),
       canteen_id: 'd9e5dbc1-526c-47d2-b3d3-9707f7f859f9',
-      customer_name: user?.name || 'Sami',
+      customer_name: user.name || 'Unknown',
       items: cartItems, // Should be JSON serializable
       total_amount: getTotalPrice(),
       deliveryDepartment,
@@ -92,7 +91,6 @@ const Checkout: React.FC = () => {
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <p className="text-gray-700 mb-1">{user?.name}</p>
                   <p className="text-sm text-gray-600">{user?.email}</p>
-                  <p className="text-sm text-gray-600">{user?.role}</p>
                 </div>
               </div>
 
