@@ -14,7 +14,7 @@ const OrderHistory: React.FC = () => {
   const { addToCart, switchCanteen, currentCanteenId } = useCart();
   const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
 
-  const userOrders = getUserOrders(user!.id);
+  const userOrders = getUserOrders();
 
   const handleViewDetails = (orderId: string) => {
     setSelectedOrder(selectedOrder === orderId ? null : orderId);

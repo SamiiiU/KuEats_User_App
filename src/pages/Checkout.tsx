@@ -20,9 +20,13 @@ const Checkout: React.FC = () => {
   const canteen = mockCanteens.find((c) => c.id === currentCanteenId);
 
   if (cartItems.length === 0) {
-    navigate('/cart');
     return null;
   }
+  useEffect(() => {
+  if (cartItems.length === 0) {
+    navigate('/cart');
+  }
+}, [cartItems]);
 
   const handleConfirmOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,13 +54,14 @@ const Checkout: React.FC = () => {
 
     clearCart();
     toast.success('Order placed successfully!');
-    setLiveOrderId(orderData.id.toString);
+    setLiveOrderId(orderData.id);
     console.log("live order id set to ", orderData.id)
     navigate(`/order-processing`);
   };
 
   useEffect(() => {
     console.log(liveOrderId)
+    
   }, [liveOrderId])
   
   
