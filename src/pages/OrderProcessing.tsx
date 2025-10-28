@@ -5,14 +5,14 @@ import { ChefHat, Bike, CheckCircle, Star } from 'lucide-react';
 import { motion } from 'motion/react';
 
 const OrderProcessing: React.FC = () => {
-  const { orderId } = useParams<{ orderId: string }>();
   const navigate = useNavigate();
-  const { getOrderById } = useOrders();
+  const { getOrderById ,  liveOrderId } = useOrders();
+  
   const [currentStep, setCurrentStep] = useState(0);
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
 
-  const order = getOrderById(orderId!);
+  const order = getOrderById('c51553e6-bc2e-4d9a-a0d9-fc6e5bfff92e');
 
   const steps = [
     {
@@ -81,7 +81,7 @@ const OrderProcessing: React.FC = () => {
               <p className="text-gray-600 text-sm md:text-base">{order.canteenName}</p>
             </div>
             <div className="text-left sm:text-right">
-              <p className="text-gray-900 text-lg md:text-xl">₹{order.totalPrice}</p>
+              <p className="text-gray-900 text-lg md:text-xl">Rs {order.total_amount}</p>
               <p className="text-sm text-gray-600">{order.date}</p>
             </div>
           </div>

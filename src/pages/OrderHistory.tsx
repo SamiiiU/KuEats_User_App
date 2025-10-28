@@ -112,7 +112,7 @@ const OrderHistory: React.FC = () => {
                         className="flex gap-4 items-center p-3 bg-gray-50 rounded-lg"
                       >
                         <img
-                          src={item.menuItem.image}
+                          src={item.menuItem.image_url}
                           alt={item.menuItem.name}
                           className="w-16 h-16 rounded-lg object-cover"
                         />
@@ -122,7 +122,7 @@ const OrderHistory: React.FC = () => {
                         </div>
                         <div className="text-right">
                           <p className="text-gray-600">x {item.quantity}</p>
-                          <p className="text-[#831615]">₹{item.menuItem.price * item.quantity}</p>
+                          <p className="text-[#831615]">Rs {item.menuItem.price * item.quantity}</p>
                         </div>
                       </div>
                     ))}
@@ -134,11 +134,11 @@ const OrderHistory: React.FC = () => {
                     </div>
                     <div className="flex justify-between mb-2">
                       <span className="text-gray-600">Payment Method:</span>
-                      <span className="text-gray-900">{selectedOrderData.paymentMethod}</span>
+                      <span className="text-gray-900">Cash </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-900">Total Amount:</span>
-                      <span className="text-gray-900">₹{selectedOrderData.totalPrice}</span>
+                      <span className="text-gray-900">Rs {selectedOrderData.total_amount}</span>
                     </div>
                   </div>
                 </div>

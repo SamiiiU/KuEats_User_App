@@ -20,7 +20,7 @@ const Home: React.FC = () => {
           <div className="max-w-3xl">
             <div className="flex items-center gap-2 mb-4">
               <Sparkles size={24} className="md:w-7 md:h-7" />
-              <h1 className="text-white text-xl md:text-3xl">Welcome, {user?.name}! </h1>
+              <h1 className="text-white text-xl md:text-3xl">Welcome, Sami! </h1>
             </div>
             <p className="text-base md:text-xl text-white/90">
               Order your favorite meals from campus canteens and get them delivered to your department

@@ -16,7 +16,9 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onViewDetails, onReorder }
           <h3 className="text-gray-900 mb-1 text-base md:text-lg">Mass Com Canteen</h3>
           <div className="flex items-center gap-2 text-gray-600 text-xs md:text-sm">
             <Calendar size={14} className="md:w-4 md:h-4" />
-            <span>{order.created_at.toLocaleString()}</span>
+            <span>
+                  {new Date(order.created_at).toLocaleString()}
+               </span>
           </div>
         </div>
         <span
@@ -39,13 +41,13 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onViewDetails, onReorder }
         </div>
         <div className="flex items-center gap-2 text-gray-600 text-xs md:text-sm">
           <CreditCard size={14} className="md:w-4 md:h-4" />
-          <span>{order.paymentMethod}</span>
+          <span>Cash</span>
         </div>
       </div>
 
       <div className="border-t pt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
         <span className="text-gray-900 text-base md:text-lg">
-          Total: Rs{order.totalPrice}
+          Total: Rs {order.total_amount}
         </span>
         <div className="flex flex-col sm:flex-row gap-2">
           <button

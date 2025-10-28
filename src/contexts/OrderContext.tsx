@@ -13,6 +13,7 @@ const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
 export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [liveOrderId , setLiveOrderId] = useState<string | null>(null);
 
   // Fetch orders from Supabase on mount
   useEffect(() => {
@@ -53,6 +54,7 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         addOrder,
         getOrderById,
         getUserOrders,
+        liveOrderId , setLiveOrderId
       }}
     >
       {children}

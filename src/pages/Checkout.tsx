@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
@@ -14,7 +14,7 @@ const Checkout: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { cartItems, getTotalPrice, currentCanteenId, clearCart } = useCart();
-  const { addOrder } = useOrders();
+  const { addOrder , liveOrderId , setLiveOrderId } = useOrders();
   const [deliveryDepartment, setDeliveryDepartment] = useState(user?.department || '');
 
   const canteen = mockCanteens.find((c) => c.id === currentCanteenId);
@@ -36,9 +36,10 @@ const Checkout: React.FC = () => {
     const orderData = {
       id: uuidv4(),
       canteen_id: 'd9e5dbc1-526c-47d2-b3d3-9707f7f859f9',
-      customer_name: user?.name || '',
+      customer_name: user?.name || 'Sami',
       items: cartItems, // Should be JSON serializable
       total_amount: getTotalPrice(),
+      deliveryDepartment,
       status: 'pending',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
@@ -49,8 +50,15 @@ const Checkout: React.FC = () => {
 
     clearCart();
     toast.success('Order placed successfully!');
-    navigate(`/order-processing/${orderData.id}`);
+    setLiveOrderId(orderData.id.toString);
+    console.log("live order id set to ", orderData.id)
+    navigate(`/order-processing`);
   };
+
+  useEffect(() => {
+    console.log(liveOrderId)
+  }, [liveOrderId])
+  
   
 
   return (

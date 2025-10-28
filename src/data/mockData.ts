@@ -239,7 +239,7 @@ export const mockOffers: Offer[] = [
   },
   {
     id: '2',
-    title: 'Free Delivery on Orders Above ₹200',
+    title: 'Free Delivery on Orders Above Rs 200',
     description: 'No minimum order required',
     image: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=800',
   },

@@ -93,7 +93,7 @@ const AppRoutes: React.FC = () => {
           }
         />
         <Route
-          path="/order-processing/:orderId"
+          path="/order-processing"
           element={
             <ProtectedRoute>
               <OrderProcessing />
