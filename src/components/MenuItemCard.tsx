@@ -9,8 +9,8 @@ interface MenuItemCardProps {
 
 const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onAddToCart }) => {
   return (
-    <div className="my-10 bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-      <div className="relative h-48">
+    <div className="my-2 bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+      <div className="relative h-56 sm:h-48">
         <img
           src={item.image_url}
           alt={item.name}

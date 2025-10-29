@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingCart, LogOut, History, Home } from 'lucide-react';
-
+import logo from '../assets/logo.png'
 const Navbar: React.FC = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const { cartItems } = useCart();
@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    
+
     navigate('/login');
     setMenuOpen(false);
   };
@@ -29,14 +29,18 @@ const Navbar: React.FC = () => {
       <div className="container mx-auto px-4 py-3 md:py-4">
         {/* Desktop Navigation */}
         <div className="hidden md:flex justify-between items-center">
-          <div className="flex items-center gap-8">
-            <h1 
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="KuEats Logo"  className="w-16" />
+
+            <h1
               className="cursor-pointer"
               onClick={() => navigate('/home')}
             >
-              KuEats
+              KuEats 
             </h1>
-            <div className="flex gap-4">
+            
+          </div>
+          <div className="flex gap-4 ml-8">
               {location.pathname !== '/home' && (
                 <button
                   onClick={() => navigate('/home')}
@@ -54,14 +58,12 @@ const Navbar: React.FC = () => {
                 <span>Orders</span>
               </button>
             </div>
-          </div>
-
           <div className="flex items-center gap-4">
             <div className="text-right mr-4">
               <p className="text-sm opacity-90">{user?.name}</p>
               <p className="text-xs opacity-75">{user?.department}</p>
             </div>
-            
+
             <button
               onClick={() => navigate('/cart')}
               className="relative flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
@@ -86,13 +88,15 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Navigation */}
         <div className="flex md:hidden justify-between items-center">
-          <h1 
+            <img src={logo} alt="KuEats Logo"  className="sm:w-16 w-12" />
+
+          <h1
             className="cursor-pointer text-lg"
             onClick={() => navigate('/home')}
           >
-            Campus Canteen
+            KuEats
           </h1>
-          
+
           <div className="flex items-center gap-2">
             <button
               onClick={() => navigate('/cart')}
@@ -105,7 +109,7 @@ const Navbar: React.FC = () => {
                 </span>
               )}
             </button>
-            
+
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="p-2 bg-white/10 rounded-lg"
@@ -127,7 +131,7 @@ const Navbar: React.FC = () => {
                 <p className="opacity-90">{user?.name}</p>
                 <p className="text-xs opacity-75">{user?.department}</p>
               </div>
-              
+
               {location.pathname !== '/home' && (
                 <button
                   onClick={() => {
@@ -140,7 +144,7 @@ const Navbar: React.FC = () => {
                   <span>Home</span>
                 </button>
               )}
-              
+
               <button
                 onClick={() => {
                   navigate('/history');
@@ -151,7 +155,7 @@ const Navbar: React.FC = () => {
                 <History size={20} />
                 <span>Orders</span>
               </button>
-              
+
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/10 transition-colors text-left"
