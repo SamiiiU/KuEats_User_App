@@ -13,14 +13,16 @@ const CanteenMenu: React.FC = () => {
   const { addToCart, switchCanteen, currentCanteenId, cartItems } = useCart();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [pendingItem, setPendingItem] = useState<MenuItem | null>(null);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
 
   const canteen = mockCanteens.find((c) => c.id === id);
   const menuItems = mockMenuItems.filter((item) => item.canteenId === id);
 
-  const [items, setItems] = useState([]);
-
   useEffect(() => {
     async function fetchMenuItems() {
+          setLoading(true); // Start loading
+
       const { data, error } = await supabase
         .from('menu_items')
         .select('*');
@@ -28,14 +30,13 @@ const CanteenMenu: React.FC = () => {
         console.error('Error fetching menu items:', error);
       } else {
         setItems(data);
-        console.log(data)
       }
+      setLoading(false); // Stop loading
     }
     fetchMenuItems();
   }, []);
 
   useEffect(() => {
-    console.log("menu agaya", items)
   }, [items])
   if (!canteen) {
     return (
@@ -117,17 +118,28 @@ const CanteenMenu: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-4 grid-cols-2 mx-auto sm:px-12 py-6 gap-6 md:py-8 ">
-        {items
-          .filter((item) => item.is_available) // Only show available items
-          .map((item) => (
-            <MenuItemCard
-              key={item.id}
-              item={item}
-              onAddToCart={() => handleAddToCart(item)}
-            />
-          ))}
-      </div>
+      <div className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 mx-auto p-8 sm:px-12 py-6 gap-6 md:py-8 ">
+      {loading
+        ? Array.from({ length: 8 }).map((_, idx) => (
+            <div
+              key={idx}
+              className="animate-pulse bg-gray-200 rounded-xl h-56 w-full flex flex-col items-center justify-center"
+            >
+              <div className="bg-gray-300 h-24 w-24 rounded-full mb-4"></div>
+              <div className="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+            </div>
+          ))
+        : items
+            .filter((item) => item.is_available)
+            .map((item) => (
+              <MenuItemCard
+                key={item.id}
+                item={item}
+                onAddToCart={() => handleAddToCart(item)}
+              />
+            ))}
+    </div>
 
       {/* Confirmation Modal */}
       {showConfirmModal && (

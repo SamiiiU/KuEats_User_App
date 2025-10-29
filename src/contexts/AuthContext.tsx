@@ -10,6 +10,7 @@ interface AuthContextType {
   signUp: (data: {
     name: string;
     email: string;
+    phone : string
     department: string;
     password: string;
   }) => Promise<{ error: any }>;
@@ -61,11 +62,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error: null };
   };
 
-  useEffect(() => {
-    console.log("user data updated" , user)
-  } , [user])
 
-  const signUp = async ({ name, email, department, password }: any) => {
+
+  const signUp = async ({ name, email, phone, department, password }: any) => {
     // 1. Create auth account
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -81,6 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           id: data.user.id,
           name,
           email,
+          phone,
           department,
         },
       ]);

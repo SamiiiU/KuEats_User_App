@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useOrders } from '../contexts/OrderContext';
@@ -13,8 +13,23 @@ const OrderHistory: React.FC = () => {
   const { getUserOrders } = useOrders();
   const { addToCart, switchCanteen, currentCanteenId } = useCart();
   const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
+  const [userOrders, setUserOrders] = useState<any[]>([]); // Add state for orders
+  const [loading, setLoading] = useState(true);
 
-  const userOrders = getUserOrders();
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (!user?.id) {
+        setUserOrders([]);
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
+      const orders = await getUserOrders(user.id);
+      setUserOrders(orders || []);
+      setLoading(false);
+    };
+    fetchOrders();
+  }, [user, getUserOrders]);
 
   const handleViewDetails = (orderId: string) => {
     setSelectedOrder(selectedOrder === orderId ? null : orderId);

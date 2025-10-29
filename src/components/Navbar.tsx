@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
               className="cursor-pointer"
               onClick={() => navigate('/home')}
             >
-              Campus Canteen
+              KuEats
             </h1>
             <div className="flex gap-4">
               {location.pathname !== '/home' && (

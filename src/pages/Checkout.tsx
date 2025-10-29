@@ -39,7 +39,7 @@ const Checkout: React.FC = () => {
     const orderData = {
       id: uuidv4(),
       canteen_id: 'd9e5dbc1-526c-47d2-b3d3-9707f7f859f9',
-      customer_name: user.name || 'Unknown',
+      customer: user,
       items: cartItems, // Should be JSON serializable
       total_amount: getTotalPrice(),
       deliveryDepartment,

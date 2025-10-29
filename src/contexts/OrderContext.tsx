@@ -43,9 +43,18 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return orders.find((order) => order.id === orderId);
   };
 
-  const getUserOrders = () => {
-    return orders
-  };
+  const getUserOrders = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*')
+    .eq('customer->>id', userId); // JSON column filter
+  if (error) {
+    console.error('Error fetching user orders:', error);
+    return [];
+  }
+  return data as Order[];
+};
+
 
   return (
     <OrderContext.Provider

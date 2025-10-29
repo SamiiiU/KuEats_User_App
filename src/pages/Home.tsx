@@ -12,7 +12,6 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
   const {scrwidth} = useContext(ContextAPI)
   useEffect(() => {
-    console.log("screen width in home is ", user)
   }, [user])
   
   return (

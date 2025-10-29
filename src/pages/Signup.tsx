@@ -9,6 +9,8 @@ const Signup: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [department, setDepartment] = useState('');
+  const [phone, setPhone] = useState('');
+
   const [role, setRole] = useState<'Student' | 'Faculty Member' | 'Teacher'>('Student');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -25,7 +27,7 @@ const Signup: React.FC = () => {
     }
 
     setLoading(true);
-    const { error } = await signUp({ name, email, department, role, password });
+    const { error } = await signUp({ name, email, phone, department, role, password });
     setLoading(false);
 
     if (error) {
@@ -41,16 +43,17 @@ const Signup: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#831615] to-[#a01d1c] flex items-center justify-center px-4 py-8">
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
         <div className="flex flex-col items-center mb-8">
-          <div className="bg-[#831615] p-4 rounded-full mb-4">
-            <img src={logo} style={{ width: 100 }} className="text-white w-20 h-20" />
-          </div>
+          <div className="bg-[#831615] sm:p-4 p-2 rounded-full mb-4">
+                      <img src={logo} alt="KuEats Logo" style={{ width: 100 }} className="sm:w-20 w-12" />
+                    </div>
           <h1 className="text-gray-900 mb-2">Create Account</h1>
-          <p className="text-gray-600">Join Campus Canteen</p>
+          <p className="text-gray-600">Join KuEats</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <InputField label="Full Name" type="text" value={name} onChange={setName} required />
-          <InputField label="Email" type="email" value={email} onChange={setEmail} required />
+          <InputField label="Full Name" type="text" value={name} onChange={setName} placeholder={"Sami Ullah "} required />
+          <InputField label="Email" type="email" value={email} onChange={setEmail} placeholder={"name@gmail.com"} required />
+          <InputField label="Phone" type="number" value={phone} onChange={setPhone} placeholder={"03308262553"} required />
           
           <label className="block text-gray-700 mb-1">Department</label>
           <select

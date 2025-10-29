@@ -40,8 +40,8 @@ const Login: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#831615] to-[#a01d1c] flex items-center justify-center px-4">
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
         <div className="flex flex-col items-center mb-8">
-          <div className="bg-[#831615] p-4 rounded-full mb-4">
-            <img src={logo} alt="KuEats Logo" style={{ width: 100 }} className="w-20 h-20" />
+          <div className="bg-[#831615] sm:p-4 p-2 rounded-full mb-4">
+            <img src={logo} alt="KuEats Logo" style={{ width: 100 }} className="sm:w-20 w-12" />
           </div>
           <h1 className="text-gray-900 mb-2">KuEats App</h1>
           <p className="text-gray-600">Login to your account</p>
@@ -85,11 +85,7 @@ const Login: React.FC = () => {
           </p>
         </div>
 
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <p className="text-sm text-gray-600 mb-2">Demo credentials:</p>
-          <p className="text-xs text-gray-500">Email: studentsami@gmail.com</p>
-          <p className="text-xs text-gray-500">Password: 12345</p>
-        </div>
+        
       </div>
     </div>
   );
